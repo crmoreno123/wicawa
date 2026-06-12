@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WYCAWA — La Experiencia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:       #0e0e0d;
+      --parchment: #f7f3ed;
+      --bone:      #ece6db;
+      --gold:      #b89a5e;
+      --gold-light:#d4b87a;
+      --dim:       #6b6560;
+      --rule:      rgba(184,154,94,0.28);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--parchment);
+      color: var(--ink);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 60px;
+      mix-blend-mode: normal;
+      transition: background 0.4s, padding 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(247,243,237,0.94);
+      backdrop-filter: blur(8px);
+      padding: 18px 60px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1.25rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-cta {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 2px;
+      transition: color 0.2s;
+    }
+    .nav-cta:hover { color: var(--gold-light); border-color: var(--gold-light); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 40px 80px;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 30%, rgba(184,154,94,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 80% 70%, rgba(184,154,94,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 0.65rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 40px;
+    }
+    .hero-title {
+      font-size: clamp(3.4rem, 9vw, 8rem);
+      font-weight: 300;
+      line-height: 0.92;
+      letter-spacing: -0.01em;
+      margin-bottom: 50px;
+    }
+    .hero-title em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--gold);
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 1.6vw, 1.2rem);
+      font-weight: 300;
+      color: var(--dim);
+      max-width: 480px;
+      line-height: 1.8;
+      margin-bottom: 64px;
+    }
+    .btn-primary {
+      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 0.68rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--parchment);
+      background: var(--ink);
+      text-decoration: none;
+      padding: 16px 42px;
+      transition: background 0.25s, color 0.25s;
+    }
+    .btn-primary:hover { background: var(--gold); }
+    .hero-rule {
+      position: absolute;
+      bottom: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-rule span {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+    .hero-rule::after {
+      content: '';
+      width: 1px;
+      height: 52px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+
+    /* ── SECTION STRUCTURE ── */
+    section { padding: 120px 60px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 0.6rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+      display: block;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      font-weight: 300;
+      line-height: 1.12;
+      margin-bottom: 28px;
+    }
+    .section-title em { font-style: italic; color: var(--gold); }
+    .section-body {
+      font-size: 1.05rem;
+      color: var(--dim);
+      line-height: 1.9;
+      max-width: 540px;
+    }
+    hr.rule {
+      border: none;
+      border-top: 1px solid var(--rule);
+      margin: 0;
+    }
+
+    /* ── INTRO SPLIT ── */
+    .intro { background: var(--parchment); }
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: center;
+    }
+    .intro-visual {
+      position: relative;
+      height: 560px;
+    }
+    .frame-outer {
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--rule);
+    }
+    .frame-inner {
+      position: absolute;
+      inset: 18px;
+      background: var(--bone);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    /* Decorative SVG plate illustration */
+    .plate-illustration {
+      width: 260px;
+      opacity: 0.9;
+    }
+
+    /* ── PILLARS ── */
+    .pillars { background: var(--ink); color: var(--parchment); }
+    .pillars .section-label { color: var(--gold); }
+    .pillars .section-title { color: var(--parchment); }
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      margin-top: 80px;
+    }
+    .pillar {
+      background: var(--ink);
+      padding: 56px 40px;
+      position: relative;
+      transition: background 0.3s;
+    }
+    .pillar:hover { background: #161614; }
+    .pillar-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4.5rem;
+      font-weight: 300;
+      color: var(--rule);
+      line-height: 1;
+      margin-bottom: 24px;
+      display: block;
+    }
+    .pillar-title {
+      font-size: 1.5rem;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      color: var(--parchment);
+      margin-bottom: 16px;
+    }
+    .pillar-title em { font-style: italic; color: var(--gold); }
+    .pillar-body {
+      font-size: 0.95rem;
+      color: rgba(247,243,237,0.5);
+      line-height: 1.85;
+    }
+    .pillar-accent {
+      position: absolute;
+      top: 0; left: 0;
+      width: 2px;
+      height: 0;
+      background: var(--gold);
+      transition: height 0.4s ease;
+    }
+    .pillar:hover .pillar-accent { height: 100%; }
+
+    /* ── WHERE ── */
+    .where { background: var(--bone); }
+    .where-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2px;
+      margin-top: 72px;
+    }
+    .where-card {
+      background: var(--parchment);
+      padding: 52px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    .where-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .where-card:hover::after { transform: scaleX(1); }
+    .where-icon {
+      width: 36px;
+      height: 36px;
+      margin-bottom: 28px;
+      color: var(--gold);
+    }
+    .where-title {
+      font-size: 1.35rem;
+      font-weight: 300;
+      margin-bottom: 14px;
+      letter-spacing: 0.03em;
+    }
+    .where-body {
+      font-size: 0.92rem;
+      color: var(--dim);
+      line-height: 1.85;
+    }
+
+    /* ── PRIVACY ── */
+    .privacy { background: var(--parchment); }
+    .privacy-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .privacy-list {
+      list-style: none;
+      margin-top: 48px;
+    }
+    .privacy-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.97rem;
+      color: var(--dim);
+      line-height: 1.7;
+    }
+    .privacy-list li:first-child { border-top: 1px solid var(--rule); }
+    .privacy-list li::before {
+      content: '—';
+      color: var(--gold);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ── CONTACT ── */
+    .contact { background: var(--ink); color: var(--parchment); text-align: center; }
+    .contact .section-label { color: var(--gold); }
+    .contact-title {
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 28px;
+      color: var(--parchment);
+    }
+    .contact-title em { font-style: italic; color: var(--gold); }
+    .contact-sub {
+      font-size: 1rem;
+      color: rgba(247,243,237,0.5);
+      margin-bottom: 64px;
+      line-height: 1.8;
+    }
+    .contact-email {
+      display: block;
+      font-size: clamp(1.1rem, 2.5vw, 1.7rem);
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--gold);
+      text-decoration: none;
+      margin-bottom: 72px;
+      transition: color 0.2s;
+    }
+    .contact-email:hover { color: var(--gold-light); }
+    .contact-rule {
+      width: 1px;
+      height: 80px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      margin: 0 auto 48px;
+    }
+    .contact-fine {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(247,243,237,0.25);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      padding: 40px 60px;
+      border-top: 1px solid rgba(184,154,94,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    footer span {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(247,243,237,0.22);
+    }
+    .footer-logo {
+      font-size: 0.85rem;
+      letter-spacing: 0.35em;
+      color: rgba(247,243,237,0.35);
+      text-transform: uppercase;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { opacity: 0; animation: fadeUp 0.9s ease forwards; }
+    .delay-1 { animation-delay: 0.15s; }
+    .delay-2 { animation-delay: 0.3s; }
+    .delay-3 { animation-delay: 0.45s; }
+    .delay-4 { animation-delay: 0.6s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 22px 28px; }
+      nav.scrolled { padding: 14px 28px; }
+      section { padding: 80px 28px; }
+      .intro-grid, .privacy-inner { grid-template-columns: 1fr; gap: 48px; }
+      .intro-visual { height: 300px; }
+      .pillars-grid, .where-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="nav-logo">Wycawa</a>
+    <a href="#contacto" class="nav-cta">Solicitar experiencia</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow fade-up">Degustación privada · In situ</p>
+    <h1 class="hero-title fade-up delay-1">
+      El placer<br/>
+      <em>en tu espacio.</em>
+    </h1>
+    <p class="hero-sub fade-up delay-2">
+      Caviar beluga, carne wagyu y vinos de autor. Una única experiencia de alta gastronomía que llevamos a donde tú estés.
+    </p>
+    <a href="#contacto" class="btn-primary fade-up delay-3">Reservar</a>
+    <div class="hero-rule fade-up delay-4">
+      <span>Descubrir</span>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- INTRO -->
+  <section class="intro" id="experiencia">
+    <div class="section-inner">
+      <div class="intro-grid">
+        <div>
+          <span class="section-label">La experiencia</span>
+          <h2 class="section-title">Un servicio<br/><em>sin igual.</em></h2>
+          <p class="section-body">
+            Wycawa lleva la más alta expresión gastronómica a tu entorno. Sin restaurantes. Sin desplazamientos. Solo tú, tu anfitrión, y una selección de productos de categoría mundial presentados con la discreción y el cuidado que merece cada detalle.
+          </p>
+          <p class="section-body" style="margin-top: 22px;">
+            Nuestro equipo mínimo garantiza una presencia casi invisible, diseñada para que la experiencia sea completamente tuya.
+          </p>
+        </div>
+        <div class="intro-visual">
+          <div class="frame-outer"></div>
+          <div class="frame-inner">
+            <!-- Decorative plate SVG -->
+            <svg class="plate-illustration" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Outer ring -->
+              <circle cx="130" cy="130" r="120" stroke="#b89a5e" stroke-width="0.8" opacity="0.35"/>
+              <circle cx="130" cy="130" r="100" stroke="#b89a5e" stroke-width="0.4" opacity="0.2"/>
+              <!-- Plate -->
+              <circle cx="130" cy="130" r="88" fill="#e8e1d5"/>
+              <circle cx="130" cy="130" r="78" stroke="#b89a5e" stroke-width="0.6" opacity="0.4" fill="none"/>
+              <!-- Decorative inner ring -->
+              <circle cx="130" cy="130" r="58" stroke="#b89a5e" stroke-width="0.4" stroke-dasharray="2 4" opacity="0.3" fill="none"/>
+              <!-- Caviar cluster -->
+              <circle cx="118" cy="122" r="5.5" fill="#2a2420" opacity="0.85"/>
+              <circle cx="130" cy="118" r="5.5" fill="#2a2420" opacity="0.85"/>
+              <circle cx="142" cy="122" r="5.5" fill="#2a2420" opacity="0.85"/>
+              <circle cx="124" cy="131" r="5.5" fill="#2a2420" opacity="0.85"/>
+              <circle cx="136" cy="131" r="5.5" fill="#2a2420" opacity="0.85"/>
+              <circle cx="130" cy="140" r="5.5" fill="#2a2420" opacity="0.85"/>
+              <!-- Shine dots on caviar -->
+              <circle cx="120" cy="120.5" r="1.2" fill="white" opacity="0.5"/>
+              <circle cx="132" cy="116.5" r="1.2" fill="white" opacity="0.5"/>
+              <circle cx="144" cy="120.5" r="1.2" fill="white" opacity="0.5"/>
+              <circle cx="126" cy="129.5" r="1.2" fill="white" opacity="0.5"/>
+              <circle cx="138" cy="129.5" r="1.2" fill="white" opacity="0.5"/>
+              <circle cx="132" cy="138.5" r="1.2" fill="white" opacity="0.5"/>
+              <!-- Gold accent line -->
+              <line x1="90" y1="155" x2="170" y2="155" stroke="#b89a5e" stroke-width="0.6" opacity="0.4"/>
+              <!-- Small decorative marks -->
+              <circle cx="130" cy="90" r="2" fill="#b89a5e" opacity="0.3"/>
+              <circle cx="170" cy="130" r="2" fill="#b89a5e" opacity="0.3"/>
+              <circle cx="130" cy="170" r="2" fill="#b89a5e" opacity="0.3"/>
+              <circle cx="90" cy="130" r="2" fill="#b89a5e" opacity="0.3"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- PILLARS -->
+  <section class="pillars" id="seleccion">
+    <div class="section-inner">
+      <span class="section-label">La selección</span>
+      <h2 class="section-title">Tres productos.<br/><em>Máxima expresión.</em></h2>
+      <div class="pillars-grid">
+        <div class="pillar">
+          <div class="pillar-accent"></div>
+          <span class="pillar-number">I</span>
+          <h3 class="pillar-title"><em>Caviar</em></h3>
+          <p class="pillar-body">Beluga, Ossetra o Sevruga de las mejores granjas certificadas. Presentado en frío con acompañamientos clásicos, sin artificios que oculten su pureza.</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar-accent"></div>
+          <span class="pillar-number">II</span>
+          <h3 class="pillar-title"><em>Carne</em></h3>
+          <p class="pillar-body">Wagyu japonés A5 y cortes madurados en seco de origen seleccionado. Cada pieza tratada con el respeto que merece su procedencia excepcional.</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar-accent"></div>
+          <span class="pillar-number">III</span>
+          <h3 class="pillar-title"><em>Vinos</em></h3>
+          <p class="pillar-body">Una selección curada de etiquetas de autor, grandes Borgoñas y cosechas singulares. Cada maridaje es pensado en función de los otros dos ingredientes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHERE -->
+  <section class="where" id="donde">
+    <div class="section-inner">
+      <span class="section-label">Dónde</span>
+      <h2 class="section-title">Tu entorno.<br/><em>Tus reglas.</em></h2>
+      <p class="section-body">Wycawa se adapta a cualquier espacio de exclusividad. La experiencia es la misma; el escenario, tuyo.</p>
+      <div class="where-grid">
+        <div class="where-card">
+          <svg class="where-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 28V14L18 6l12 8v14H6z"/>
+            <path d="M13 28v-8h10v8"/>
+            <path d="M18 6v4"/>
+          </svg>
+          <h3 class="where-title">Residencia privada</h3>
+          <p class="where-body">Tu hogar como escenario. Ya sea un ático, una villa o una finca, llevamos la experiencia completa a tu salón o terraza.</p>
+        </div>
+        <div class="where-card">
+          <svg class="where-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 22c2-4 6-7 14-7s12 3 14 7"/>
+            <ellipse cx="18" cy="22" rx="14" ry="4"/>
+            <line x1="18" y1="10" x2="18" y2="15"/>
+            <path d="M14 14h8"/>
+          </svg>
+          <h3 class="where-title">Yate </h3>
+          <p class="where-body">En cubierta o en el salón principal. El entorno marítimo añade una dimensión única a cada sorbo y cada bocado.</p>
+        </div>
+        <div class="where-card">
+          <svg class="where-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 22l6-10h16l6 10"/>
+            <path d="M4 22h28"/>
+            <path d="M10 22v4M26 22v4"/>
+            <path d="M14 12v-4l4-2 4 2v4"/>
+          </svg>
+          <h3 class="where-title">Jet </h3>
+          <p class="where-body">Para quienes viven entre destinos. Coordinamos con tu tripulación para que la experiencia esté lista antes de abordar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- PRIVACY -->
+  <section class="privacy" id="privacidad">
+    <div class="section-inner">
+      <div class="privacy-inner">
+        <div>
+          <span class="section-label">Privacidad</span>
+          <h2 class="section-title">Discreción<br/><em>absoluta.</em></h2>
+          <p class="section-body">
+            Entendemos que la privacidad no es un beneficio añadido, sino el fundamento de la experiencia. Cada protocolo de Wycawa está diseñado para que nada interrumpa el momento.
+          </p>
+        </div>
+        <div>
+          <ul class="privacy-list">
+            <li>Personal mínimo e imprescindible. Ninguna presencia innecesaria dentro del espacio.</li>
+            <li>Prohibición estricta del uso de teléfonos móviles durante el servicio para todo el equipo.</li>
+            <li>Acuerdo de confidencialidad firmado por todos los miembros del equipo Wycawa.</li>
+            <li>Sin redes sociales. Sin registros. Sin fotografías. La experiencia queda entre nosotros.</li>
+            <li>Acceso mediante reserva previa. Nunca listas de espera públicas ni plataformas abiertas.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contacto">
+    <div class="section-inner">
+      <span class="section-label">Contacto</span>
+      <h2 class="contact-title">¿Listo para<br/><em>la experiencia?</em></h2>
+      <p class="contact-sub">
+        Cada servicio se planifica de forma personal.<br/>Escríbenos y estudiaremos tu fecha, espacio y preferencias.
+      </p>
+      <a href="mailto:reservas@wycawa.com" class="contact-email">reservas@wycawa.com</a>
+      <div class="contact-rule"></div>
+      <p class="contact-fine">Solo por invitación — Máxima discreción garantizada</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-logo">Wycawa</span>
+    <span>© 2026 · Todos los derechos reservados</span>
+    <span>Privacidad total</span>
+  </footer>
+
+  <script>
+    // Nav scroll effect
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.pillar, .where-card, .privacy-list li').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(22px)';
+      el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
